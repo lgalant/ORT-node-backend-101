@@ -15,7 +15,7 @@ app.get('/', (request, response) => {
   response.json({ info: 'Node 101 ORT Proyecto' })
 })
 
-app.listen(port, () => {
+app.listen(process.env.PORT ||port, () => {
   console.log(`App running on port ${port}.`)
 })
 
