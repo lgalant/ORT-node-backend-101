@@ -49,29 +49,29 @@ const createPersona = (request, response) => {
 
 
 const updatePersona  = (request, response) => {
-  const Id = parseInt(request.params.Id)
+  const id = parseInt(request.params.id)
   const { Nombre, FechaNac } = request.body
 
   pool.query(
     'UPDATE persona SET "Nombre" = $1, "FechaNac" = $2 WHERE "Id" = $3',
-    [Nombre, FechaNac, Id],
+    [Nombre, FechaNac, id],
     (error, results) => {
       if (error) {
         throw error
       }
-      response.status(200).send(`Persona  modified with ID: ${Id}`)
+      response.status(200).send(`Persona  modified with ID: ${id}`)
     }
   )
 }
 
 const deletePersona = (request, response) => {
-  const Id = parseInt(request.params.Id)
+  const id = parseInt(request.params.id)
 
-  pool.query('DELETE FROM persona WHERE "Id" = $1', [Id], (error, results) => {
+  pool.query('DELETE FROM persona WHERE "Id" = $1', [id], (error, results) => {
     if (error) {
       throw error
     }
-    response.status(200).send(`User deleted with ID: ${Id}`)
+    response.status(200).send(`User deleted with ID: ${id}`)
   })
 }
 
