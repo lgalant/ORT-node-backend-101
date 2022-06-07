@@ -15,8 +15,8 @@ const pool = new Pool({
     },
 })
 
-const getUsers = (request, response) => {
-  pool.query('SELECT * FROM esquema1.persona  ', (error, results) => {
+const getPersonas = (request, response) => {
+  pool.query('SELECT * FROM persona  ', (error, results) => {
     if (error) {
       throw error
     }
@@ -24,21 +24,61 @@ const getUsers = (request, response) => {
   })
 }
 
-const getUserById = (request, response) => {
+const getPersonaById = (request, response) => {
   const id = parseInt(request.params.id)
 
-  pool.query('SELECT * FROM   esquema1.persona WHERE "Id" = $1', [id], (error, results) => {
+  pool.query('SELECT * FROM  persona WHERE "Id" = $1', [id], (error, results) => {
     if (error) {
       throw error
     }
     response.status(200).json(results.rows)
+  })
+}
+
+
+const createPersona = (request, response) => {
+  const { Nombre, FechaNac } = request.body
+
+  pool.query('INSERT INTO persona ("Nombre", "FechaNac") VALUES ($1, $2) RETURNING *', [Nombre, FechaNac], (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(201).send(`Persona added with ID: ${results.rows[0].Id}`)
+  })
+}
+
+
+const updatePersona  = (request, response) => {
+  const Id = parseInt(request.params.Id)
+  const { Nombre, FechaNac } = request.body
+
+  pool.query(
+    'UPDATE persona SET "Nombre" = $1, "FechaNac" = $2 WHERE "Id" = $3',
+    [Nombre, FechaNac, Id],
+    (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).send(`Persona  modified with ID: ${Id}`)
+    }
+  )
+}
+
+const deletePersona = (request, response) => {
+  const Id = parseInt(request.params.Id)
+
+  pool.query('DELETE FROM persona WHERE "Id" = $1', [Id], (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).send(`User deleted with ID: ${Id}`)
   })
 }
 
 module.exports = {
-  getUsers,
-  getUserById,
-//  createUser,
-//  updateUser,
-//  deleteUser,
+  getPersonas,
+  getPersonaById,
+  createPersona,
+  updatePersona,
+  deletePersona
 }

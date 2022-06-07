@@ -19,5 +19,8 @@ app.listen(process.env.PORT ||port, () => {
   console.log(`App running on port ${port}.`)
 })
 
-app.get('/users', db.getUsers)
-app.get('/users/:id', db.getUserById)
+app.get('/personas', db.getPersonas)
+app.get('/personas/:id', db.getPersonaById)
+app.post('/personas', db.createPersona)
+app.put('/personas/:id', db.updatePersona)
+app.delete('/personas/:id', db.deletePersona)
